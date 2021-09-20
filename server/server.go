@@ -35,6 +35,10 @@ func factorialInt(v int64) string {
 
 func factorialFloat(v int64) string {
 
+	if v > 10000000 {
+		return "+Inf"
+	}
+
 	var res float64 = 1.0
 
 	var i int64
