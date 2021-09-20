@@ -5,8 +5,8 @@ import (
 	"log"
 	"time"
 
-	"google.golang.org/grpc"
 	pb "client/proto"
+	"google.golang.org/grpc"
 )
 
 const (
@@ -21,31 +21,31 @@ func main() {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-  
-  // client
+
+	// client
 	c := pb.NewFactorialClient(conn)
 
 	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), 10* time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-  
-  testValues := []int64{-2, 0, 1, 2, 3, 4, 5, 6, 10, 20, 30, 1000, 10000000}  //9223372036854775807
-  
-  r, err := c.Calculate(ctx, &pb.CalculateRequest{ Numbers: testValues } )
-  if err != nil {
+
+	testValues := []int64{-2, 0, 1, 2, 3, 4, 5, 6, 10, 20, 30, 1000, 10000000} //9223372036854775807
+
+	r, err := c.Calculate(ctx, &pb.CalculateRequest{Numbers: testValues})
+	if err != nil {
 		log.Fatalf("could not calculate: %v", err)
 	}
-	
-  log.Println("Calculation results:")    
-  
-  for range testValues {
-    result, err := r.Recv()
-    if err != nil {
-      log.Printf("timeout getting output: %v", err)      
-      break;
-    }
-    
-    log.Printf("input: %d  output: %s", result.InputNumber, result.FactorialResult)  
-  }
-  
+
+	log.Println("Calculation results:")
+
+	for range testValues {
+		result, err := r.Recv()
+		if err != nil {
+			log.Printf("timeout getting output: %v", err)
+			break
+		}
+
+		log.Printf("input: %d  output: %s", result.InputNumber, result.FactorialResult)
+	}
+
 }
