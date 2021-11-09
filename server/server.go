@@ -77,7 +77,7 @@ func (s *server) Calculate(in *pb.CalculateRequest, stream pb.Factorial_Calculat
 
 		err := stream.Send(&res)
 		if err != nil {
-			log.Printf("Error sening response: %v", err)
+			log.Printf("Error sending response: %v", err)
 			break
 		}
 
@@ -106,6 +106,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+  
 	s := grpc.NewServer()
 	pb.RegisterFactorialServer(s, &server{})
 	if err := s.Serve(lis); err != nil {
